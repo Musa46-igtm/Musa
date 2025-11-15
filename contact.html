@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Contact | Musa</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden;width:100%}
+body{font-family:'Inter',sans-serif;background:#0f1115;color:#e5e5e5;overflow-x:hidden;width:100%;line-height:1.6;position:relative}
+a{text-decoration:none;color:inherit}
+.container{max-width:1200px;margin:0 auto;padding:0 2rem;width:100%}
+
+/* Preloader */
+#preloader{position:fixed;top:0;left:0;width:100vw;height:100vh;display:flex;justify-content:center;align-items:center;background:#0f1115;z-index:10000;transition:opacity .8s ease}
+.loader{width:50px;height:50px;border:5px solid #ffffff10;border-top:5px solid #00aaff;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Header Animations */
+header{width:100%;position:fixed;top:0;left:0;background:rgba(15,17,21,.95);backdrop-filter:blur(8px);z-index:999;border-bottom:1px solid rgba(255,255,255,.05);animation:slideDown 0.6s ease-out}
+@keyframes slideDown{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}
+
+.nav{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 2rem}
+.nav__logo{font-size:1.5rem;font-weight:700;color:#00aaff;letter-spacing:-.5px;animation:glow 3s ease-in-out infinite}
+@keyframes glow{0%,100%{text-shadow:0 0 10px rgba(0,170,255,0.5)}50%{text-shadow:0 0 20px rgba(0,170,255,0.8),0 0 30px rgba(0,170,255,0.6)}}
+
+.nav__list{display:flex;list-style:none;gap:2rem}
+.nav__link{font-weight:500;font-size:.95rem;transition:.3s;position:relative}
+.nav__link:after{content:'';position:absolute;width:0;height:2px;bottom:-5px;left:0;background-color:#00aaff;transition:width .3s ease}
+.nav__link:hover:after,.nav__link.active-link:after{width:100%}
+.nav__link:hover,.active-link{color:#00aaff}
+.nav__toggle{display:none;cursor:pointer;font-size:1.8rem;color:#00aaff;z-index:1001}
+
+@media(max-width:768px){
+.nav__list{display:flex;position:fixed;right:-100%;top:0;background:rgba(15,17,21,.98);backdrop-filter:blur(10px);height:100vh;width:70%;flex-direction:column;padding:6rem 2rem;gap:2rem;transition:right .5s ease;box-shadow:-5px 0 15px rgba(0,0,0,.3);overflow-y:auto}
+.nav__list.show{right:0}
+.nav__toggle{display:block}
+}
+@media(min-width:769px){
+.nav__toggle{display:none!important}
+.nav__list{display:flex!important}
+}
+
+/* Progress Bar */
+.progress-bar{position:fixed;top:0;left:0;height:4px;background:linear-gradient(to right,#00aaff,#00ff9d);z-index:10000;width:0%;transition:width 0.1s ease}
+
+/* Page Header with Parallax */
+.page-header{padding:10rem 2rem 4rem;text-align:center;background:linear-gradient(135deg,#0f1115 0%,#1a1d25 100%);position:relative;overflow:hidden;transition:transform 0.1s ease}
+.page-header:before{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(0,170,255,.05);top:-200px;right:-200px;animation:float 8s ease-in-out infinite}
+.page-header:after{content:'';position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(0,170,255,.03);bottom:-150px;left:-150px;animation:float 10s ease-in-out infinite reverse}
+@keyframes float{0%,100%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(-20px,-20px) rotate(5deg)}50%{transform:translate(0,-40px) rotate(0deg)}75%{transform:translate(20px,-20px) rotate(-5deg)}}
+
+.page-header h1{font-size:3.5rem;font-weight:700;color:#00aaff;margin-bottom:1rem;position:relative;z-index:1;animation:fadeInUp 1s ease-out;text-shadow:0 0 30px rgba(0,170,255,0.3)}
+.page-header p{font-size:1.2rem;color:#b0b0b0;max-width:600px;margin:0 auto;position:relative;z-index:1;animation:fadeInUp 1.2s ease-out}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+
+/* Contact Content */
+.contact-content{max-width:1100px;margin:0 auto;padding:0 2rem 4rem}
+.contact-section{margin-bottom:4rem;opacity:0;transform:translateY(30px);transition:.8s ease}
+.contact-section.visible{opacity:1;transform:translateY(0)}
+
+.section-title{font-size:2rem;color:#00aaff;margin-bottom:2rem;position:relative;padding-bottom:.5rem;opacity:0;animation:titleAppear 1s ease-out forwards}
+@keyframes titleAppear{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+
+.section-title:after{content:'';position:absolute;width:0;height:3px;background:#00aaff;bottom:0;left:0;animation:expandLine 1.2s ease-out 0.5s forwards}
+@keyframes expandLine{from{width:0}to{width:60px}}
+
+/* Contact Layout */
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:2rem}
+@media(max-width:968px){.contact-layout{grid-template-columns:1fr;gap:3rem}}
+
+/* Contact Info */
+.contact-info{display:flex;flex-direction:column;gap:1.5rem}
+.contact-card{background:#1b1f26;padding:2rem;border-radius:10px;transition:all .4s ease;box-shadow:0 5px 15px rgba(0,0,0,.1);opacity:0;transform:translateX(-20px);animation:slideInRight 0.8s ease-out forwards}
+.contact-card:nth-child(1){animation-delay:0.2s}
+.contact-card:nth-child(2){animation-delay:0.3s}
+.contact-card:nth-child(3){animation-delay:0.4s}
+@keyframes slideInRight{to{opacity:1;transform:translateX(0)}}
+
+.contact-card:hover{transform:translateY(-5px) translateX(0);box-shadow:0 15px 30px rgba(0,170,255,0.2)}
+.contact-card__header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
+.contact-card__icon{width:50px;height:50px;background:rgba(0,170,255,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#00aaff}
+.contact-card__title{font-size:1.3rem;color:#e5e5e5}
+.contact-card__content{color:#b0b0b0;line-height:1.6}
+
+.contact-details{display:flex;flex-direction:column;gap:1rem}
+.contact-item{display:flex;align-items:center;gap:1rem;padding:.8rem 0;border-bottom:1px solid #2a2e38}
+.contact-item:last-child{border-bottom:none}
+.contact-item__icon{font-size:1.2rem;color:#00aaff;min-width:20px}
+.contact-item__text{color:#e5e5e5;font-weight:500}
+.contact-item__link{color:#00aaff;transition:color .3s ease}
+.contact-item__link:hover{color:#fff}
+
+/* Social Links */
+.social-links{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.social-link{display:flex;align-items:center;gap:.5rem;padding:.8rem 1.2rem;background:rgba(0,170,255,.1);border-radius:8px;color:#00aaff;transition:all .3s ease;text-decoration:none}
+.social-link:hover{background:#00aaff;color:#fff;transform:translateY(-3px)}
+
+/* Contact Form */
+.contact-form-container{background:#1b1f26;padding:2rem;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,.1);opacity:0;transform:translateX(20px);animation:slideInLeft 0.8s ease-out 0.3s forwards}
+@keyframes slideInLeft{to{opacity:1;transform:translateX(0)}}
+
+.contact-form{display:flex;flex-direction:column;gap:1.5rem}
+.form-group{display:flex;flex-direction:column;gap:.5rem}
+.form-label{color:#e5e5e5;font-weight:500;font-size:.95rem}
+.form-input,.form-textarea{background:#0f1115;border:2px solid #2a2e38;border-radius:8px;padding:1rem;color:#e5e5e5;font-size:1rem;transition:all .3s ease;font-family:inherit}
+.form-input:focus,.form-textarea:focus{outline:none;border-color:#00aaff;box-shadow:0 0 0 3px rgba(0,170,255,.1)}
+.form-textarea{min-height:150px;resize:vertical}
+.form-submit{background:#00aaff;color:#fff;border:none;padding:1rem 2rem;border-radius:8px;font-weight:600;font-size:1rem;cursor:pointer;transition:all .3s ease;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.form-submit:hover{background:#0090d0;transform:translateY(-3px);box-shadow:0 10px 20px rgba(0,170,255,.2)}
+.form-submit:disabled{background:#2a2e38;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* Form Status */
+.form-status{display:none;padding:1rem;border-radius:8px;margin-top:1rem;text-align:center;font-weight:500}
+.form-status.success{display:block;background:rgba(0,255,157,.1);color:#00ff9d;border:1px solid rgba(0,255,157,.3)}
+.form-status.error{display:block;background:rgba(255,0,0,.1);color:#ff6b6b;border:1px solid rgba(255,0,0,.3)}
+
+/* FAQ Section */
+.faq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:1rem}
+.faq-item{background:#1b1f26;padding:1.5rem;border-radius:10px;transition:all .4s ease;box-shadow:0 5px 15px rgba(0,0,0,.1);opacity:0;animation:fadeInUp 0.6s ease-out forwards}
+.faq-item:nth-child(1){animation-delay:0.2s}
+.faq-item:nth-child(2){animation-delay:0.3s}
+.faq-item:nth-child(3){animation-delay:0.4s}
+.faq-item:nth-child(4){animation-delay:0.5s}
+
+.faq-item:hover{transform:translateY(-5px);box-shadow:0 10px 25px rgba(0,170,255,0.15)}
+.faq-question{font-size:1.1rem;color:#00aaff;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.faq-answer{color:#b0b0b0;line-height:1.6;font-size:.95rem}
+
+/* Map Placeholder */
+.map-placeholder{background:#1b1f26;border-radius:10px;height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;margin-top:2rem;opacity:0;animation:fadeInUp 0.8s ease-out 0.5s forwards}
+.map-icon{font-size:3rem;color:#00aaff}
+.map-text{color:#b0b0b0;text-align:center}
+
+/* Footer */
+footer{text-align:center;padding:3rem 2rem;background:#0a0c10;color:#aaa;border-top:1px solid rgba(255,255,255,.05)}
+.footer__content{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+.footer__icon{margin:0 .5rem;font-size:1.5rem;color:#00aaff;transition:all .3s;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:rgba(0,170,255,.1)}
+.footer__icon:hover{color:#fff;background:#00aaff;transform:translateY(-5px) rotate(360deg)}
+.footer__links{display:flex;gap:2rem;margin-top:1rem}
+.footer__links a{color:#b0b0b0;transition:color .3s ease}
+.footer__links a:hover{color:#00aaff}
+
+/* Responsive */
+@media(max-width:768px){
+.page-header h1{font-size:2.5rem}
+.contact-layout{grid-template-columns:1fr;gap:2rem}
+.contact-card{padding:1.5rem}
+.faq-grid{grid-template-columns:1fr}
+.social-links{justify-content:center}
+.footer__links{flex-direction:column;gap:1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Preloader -->
+<div id="preloader"><div class="loader"></div></div>
+
+<header>
+<nav class="nav container">
+<a href="index.html" class="nav__logo">Musa</a>
+<ul class="nav__list" id="nav-list">
+<li><a href="index.html" class="nav__link">Home</a></li>
+<li><a href="about.html" class="nav__link">About</a></li>
+<li><a href="skills.html" class="nav__link">Skills</a></li>
+<li><a href="resume.html" class="nav__link">Resume</a></li>
+<li><a href="work.html" class="nav__link">Projects</a></li>
+<li><a href="contact.html" class="nav__link active-link">Contact</a></li>
+</ul>
+<div class="nav__toggle" id="nav-toggle"><i class='bx bx-menu'></i></div>
+</nav>
+</header>
+
+<div class="page-header" id="pageHeader">
+<h1>Get In Touch</h1>
+<p>Let's collaborate on something amazing together</p>
+</div>
+
+<div class="contact-content">
+<!-- Contact Information & Form -->
+<section class="contact-section" id="contact-main">
+  <div class="contact-layout">
+    <!-- Contact Information -->
+    <div class="contact-info">
+      <div class="contact-card">
+        <div class="contact-card__header">
+          <div class="contact-card__icon">
+            <i class='bx bx-envelope'></i>
+          </div>
+          <h3 class="contact-card__title">Send me a message</h3>
+        </div>
+        <div class="contact-card__content">
+          <p>Feel free to reach out for collaborations, questions, or just to say hello. I'm always open to discussing new projects and opportunities.</p>
+        </div>
+        <div class="contact-details">
+          <div class="contact-item">
+            <i class='bx bx-envelope contact-item__icon'></i>
+            <div class="contact-item__text">
+              <a href="mailto:macro489001@email.com" class="contact-item__link">macro489001@email.com</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <i class='bx bxl-github contact-item__icon'></i>
+            <div class="contact-item__text">
+              <a href="https://github.com/musa46-igtm" class="contact-item__link" target="_blank">github.com/musa46-igtm</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <i class='bx bxl-discord contact-item__icon'></i>
+            <div class="contact-item__text">musa#1234</div>
+          </div>
+          <div class="contact-item">
+            <i class='bx bx-map contact-item__icon'></i>
+            <div class="contact-item__text">Nigeria</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-card__header">
+          <div class="contact-card__icon">
+            <i class='bx bx-share-alt'></i>
+          </div>
+          <h3 class="contact-card__title">Connect with me</h3>
+        </div>
+        <div class="contact-card__content">
+          <p>Follow me on social media to stay updated with my latest projects and developments.</p>
+          <div class="social-links">
+            <a href="https://github.com/musa46-igtm" class="social-link" target="_blank">
+              <i class='bx bxl-github'></i>
+              <span>GitHub</span>
+            </a>
+
+            <a href="https://youtube.com/@musabuilds?si=mhGwMpC5r9IbbS-z" class="social-link">
+              <i class='bx bxl-youtube'></i>
+              <span>YouTube</span>
+            </a>
+            <a href="https://twitter.com/MusaAbubak60427" class="social-link">
+              <i class='bx bxl-twitter'></i>
+              <span>Twitter</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-card__header">
+          <div class="contact-card__icon">
+            <i class='bx bx-time'></i>
+          </div>
+          <h3 class="contact-card__title">Response Time</h3>
+        </div>
+        <div class="contact-card__content">
+          <p>I typically respond to emails within 24 hours. For urgent matters, please mention "URGENT" in your subject line.</p>
+          <div class="contact-details">
+            <div class="contact-item">
+              <i class='bx bx-check-circle contact-item__icon'></i>
+              <div class="contact-item__text">Average response: <span style="color:#00ff9d">Within 24 hours</span></div>
+            </div>
+            <div class="contact-item">
+              <i class='bx bx-globe contact-item__icon'></i>
+              <div class="contact-item__text">Time zone: <span style="color:#00aaff">WAT (UTC+1)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="contact-form-container">
+      <h3 class="section-title" style="font-size:1.5rem; margin-bottom:1.5rem;">Send a Message</h3>
+      <form class="contact-form" id="contactForm">
+        <div class="form-group">
+          <label for="name" class="form-label">Full Name</label>
+          <input type="text" id="name" class="form-input" placeholder="Enter your name" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email" class="form-label">Email Address</label>
+          <input type="email" id="email" class="form-input" placeholder="Enter your email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="subject" class="form-label">Subject</label>
+          <input type="text" id="subject" class="form-input" placeholder="What is this regarding?" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="message" class="form-label">Message</label>
+          <textarea id="message" class="form-textarea" placeholder="Tell me about your project or question..." required></textarea>
+        </div>
+        
+        <button type="submit" class="form-submit" id="submitBtn">
+          <i class='bx bx-paper-plane'></i> Send Message
+        </button>
+        
+        <div class="form-status" id="formStatus"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="contact-section" id="faq">
+  <h2 class="section-title">Frequently Asked Questions</h2>
+  <div class="faq-grid">
+    <div class="faq-item">
+      <h3 class="faq-question"><i class='bx bx-question-mark'></i> What kind of projects do you take on?</h3>
+      <p class="faq-answer">I'm open to various projects including web development, mobile apps, game development, and 3D modeling. I particularly enjoy creative challenges and learning new technologies.</p>
+    </div>
+    
+    <div class="faq-item">
+      <h3 class="faq-question"><i class='bx bx-question-mark'></i> What is your hourly rate?</h3>
+      <p class="faq-answer">As a young developer focused on learning and building my portfolio, I'm flexible with pricing. Let's discuss your project requirements and we can find a suitable arrangement.</p>
+    </div>
+    
+    <div class="faq-item">
+      <h3 class="faq-question"><i class='bx bx-question-mark'></i> How do you approach a new project?</h3>
+      <p class="faq-answer">I start by understanding your requirements, then create a plan with milestones. I believe in clear communication and regular updates throughout the development process.</p>
+    </div>
+    
+    <div class="faq-item">
+      <h3 class="faq-question"><i class='bx bx-question-mark'></i> Do you work collaboratively with other developers?</h3>
+      <p class="faq-answer">Absolutely! I enjoy collaborating with other developers and learning from their experiences. I'm always open to team projects and open-source contributions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Location Section -->
+<section class="contact-section" id="location">
+  <h2 class="section-title">My Location</h2>
+  <div class="map-placeholder">
+    <i class='bx bx-map map-icon'></i>
+    <div class="map-text">
+      <h3>Based in Nigeria</h3>
+      <p>Working remotely with clients worldwide</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<footer>
+<div class="footer__content">
+<div>
+<a href="https://github.com/musa46-igtm" class="footer__icon" target="_blank"><i class='bx bxl-github'></i></a>
+<a href="https://youtube.com/@musabuilds?si=mhGwMpC5r9IbbS-z" class="footer__icon"><i class='bx bxl-youtube'></i></a>
+<a href="https://twitter.com/MusaAbubak60427" class="footer__icon"><i class='bx bxl-twitter'></i></a>
+
+  </div>
+<p>Musa © 2025. Always learning, always building!</p>
+</div>
+</footer>
+
+<script>
+// Preloader
+document.addEventListener('DOMContentLoaded', () => {
+  const preloader = document.getElementById('preloader');
+  setTimeout(() => {
+    preloader.style.opacity = '0';
+    setTimeout(() => preloader.style.display = 'none', 300);
+  }, 500);
+});
+
+// Mobile Navigation Toggle
+const navToggle = document.getElementById('nav-toggle');
+const navList = document.getElementById('nav-list');
+
+navToggle.addEventListener('click', () => {
+  navList.classList.toggle('show');
+  navToggle.innerHTML = navList.classList.contains('show') ? '<i class="bx bx-x"></i>' : '<i class="bx bx-menu"></i>';
+});
+
+document.querySelectorAll('.nav__link').forEach(link => {
+  link.addEventListener('click', () => {
+    navList.classList.remove('show');
+    navToggle.innerHTML = '<i class="bx bx-menu"></i>';
+  });
+});
+
+// Scroll Progress Bar
+window.addEventListener('scroll', () => {
+  const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = (winScroll / height) * 100;
+  document.getElementById('progressBar').style.width = scrolled + '%';
+});
+
+// Parallax Effect for Page Header
+window.addEventListener('scroll', () => {
+  const scrolled = window.pageYOffset;
+  const header = document.getElementById('pageHeader');
+  if (header && scrolled < 800) {
+    header.style.transform = `translateY(${scrolled * 0.4}px)`;
+    header.style.opacity = 1 - (scrolled / 600);
+  }
+});
+
+// Smooth reveal on scroll for sections
+const revealSections = document.querySelectorAll('.contact-section');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+revealSections.forEach(section => {
+  revealObserver.observe(section);
+});
+
+// Contact Form Handling
+const contactForm = document.getElementById('contactForm');
+const submitBtn = document.getElementById('submitBtn');
+const formStatus = document.getElementById('formStatus');
+
+contactForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  // Get form data
+  const formData = {
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    subject: document.getElementById('subject').value,
+    message: document.getElementById('message').value
+  };
+  
+  // Validate form
+  if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+    showFormStatus('Please fill in all fields', 'error');
+    return;
+  }
+  
+  // Disable submit button
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Sending...';
+  
+  try {
+    // Simulate form submission (replace with actual form handling)
+    await simulateFormSubmission(formData);
+    
+    // Show success message
+    showFormStatus('Message sent successfully! I\'ll get back to you soon.', 'success');
+    
+    // Reset form
+    contactForm.reset();
+    
+  } catch (error) {
+    // Show error message
+    showFormStatus('Sorry, there was an error sending your message. Please try again.', 'error');
+  } finally {
+    // Re-enable submit button
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<i class="bx bx-paper-plane"></i> Send Message';
+  }
+});
+
+// Simulate form submission (replace with actual backend integration)
+function simulateFormSubmission(formData) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      // Simulate random success/failure for demo
+      const isSuccess = Math.random() > 0.2;
+      
+      if (isSuccess) {
+        console.log('Form submitted:', formData);
+        resolve();
+      } else {
+        reject(new Error('Network error'));
+      }
+    }, 1500);
+  });
+}
+
+// Show form status message
+function showFormStatus(message, type) {
+  formStatus.textContent = message;
+  formStatus.className = 'form-status ' + type;
+  
+  // Hide status after 5 seconds
+  setTimeout(() => {
+    formStatus.style.display = 'none';
+  }, 5000);
+}
+
+// Add animation to social links on hover
+document.querySelectorAll('.social-link').forEach(link => {
+  link.addEventListener('mouseenter', function() {
+    this.style.transform = 'translateY(-3px)';
+  });
+  
+  link.addEventListener('mouseleave', function() {
+    this.style.transform = 'translateY(0)';
+  });
+});
+</script>
+</body>
+</html>
