@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Musa | Professional Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden;width:100%}
+body{font-family:'Inter',sans-serif;background:#0f1115;color:#e5e5e5;overflow-x:hidden;width:100%;line-height:1.6;position:relative}
+a{text-decoration:none;color:inherit}
+.container{max-width:1200px;margin:0 auto;padding:0 2rem;width:100%}
+
+/* Preloader */
+#preloader{position:fixed;top:0;left:0;width:100vw;height:100vh;display:flex;justify-content:center;align-items:center;background:#0f1115;z-index:10000;transition:opacity .8s ease}
+.loader{width:50px;height:50px;border:5px solid #ffffff10;border-top:5px solid #00aaff;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Header Animations - IMPROVED */
+header{width:100%;position:fixed;top:0;left:0;background:rgba(15,17,21,.95);backdrop-filter:blur(10px);z-index:999;border-bottom:1px solid rgba(255,255,255,.05);animation:slideDown 0.6s ease-out}
+@keyframes slideDown{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}
+
+.nav{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 2rem}
+.nav__logo{font-size:1.5rem;font-weight:700;color:#00aaff;letter-spacing:-.5px;animation:glow 3s ease-in-out infinite}
+@keyframes glow{0%,100%{text-shadow:0 0 10px rgba(0,170,255,0.5)}50%{text-shadow:0 0 20px rgba(0,170,255,0.8),0 0 30px rgba(0,170,255,0.6)}}
+
+.nav__list{display:flex;list-style:none;gap:2rem}
+.nav__link{font-weight:500;font-size:.95rem;transition:.3s;position:relative}
+.nav__link:after{content:'';position:absolute;width:0;height:2px;bottom:-5px;left:0;background-color:#00aaff;transition:width .3s ease}
+.nav__link:hover:after,.nav__link.active-link:after{width:100%}
+.nav__link:hover,.active-link{color:#00aaff}
+.nav__toggle{display:none;cursor:pointer;font-size:1.8rem;color:#00aaff;z-index:1001}
+
+@media(max-width:768px){
+.nav__list{display:flex;position:fixed;right:-100%;top:0;background:rgba(15,17,21,.98);backdrop-filter:blur(10px);height:100vh;width:70%;flex-direction:column;padding:6rem 2rem;gap:2rem;transition:right .5s ease;box-shadow:-5px 0 15px rgba(0,0,0,.3);overflow-y:auto}
+.nav__list.show{right:0}
+.nav__toggle{display:block}
+}
+@media(min-width:769px){
+.nav__toggle{display:none!important}
+.nav__list{display:flex!important}
+}
+
+/* Progress Bar */
+.progress-bar{position:fixed;top:0;left:0;height:4px;background:linear-gradient(to right,#00aaff,#00ff9d);z-index:10000;width:0%;transition:width 0.1s ease}
+
+/* Sections with Animations */
+section{min-height:100vh;padding:8rem 2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0;transform:translateY(30px);transition:.8s ease;width:100%;overflow-x:hidden}
+section.visible{opacity:1;transform:translateY(0)}
+
+h1,h2,h3{margin-bottom:1.5rem;font-weight:600}
+h1{font-size:3.5rem;font-weight:700;line-height:1.2}
+h1 span{color:#00aaff}
+h2{color:#00aaff;font-size:2.5rem;position:relative;display:inline-block;margin-bottom:3rem;opacity:0;animation:titleAppear 1s ease-out forwards}
+@keyframes titleAppear{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:translateY(0)}}
+
+h2:after{content:'';position:absolute;width:0;height:3px;background:#00aaff;bottom:-10px;left:50%;transform:translateX(-50%);animation:expandLine 1.2s ease-out 0.5s forwards}
+@keyframes expandLine{from{width:0}to{width:80px}}
+
+p{font-size:1.1rem;max-width:700px;margin:0 auto 2rem;color:#b0b0b0;opacity:0;transform:translateY(20px);animation:fadeInUp 1s ease-out forwards}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+
+.button{background:#00aaff;color:#fff;padding:1rem 2.5rem;border-radius:50px;font-weight:500;transition:.3s;display:inline-block;border:none;cursor:pointer;font-size:1rem;letter-spacing:.5px;opacity:0;animation:fadeInUp 1s ease-out 0.3s forwards}
+.button:hover{background:#0090d0;transform:translateY(-3px);box-shadow:0 10px 20px rgba(0,170,255,.2)}
+.button-outline{background:transparent;border:2px solid #00aaff;color:#00aaff;margin-left:1rem;opacity:0;animation:fadeInUp 1s ease-out 0.5s forwards}
+.button-outline:hover{background:rgba(0,170,255,.1)}
+
+/* Home Section with Parallax */
+#home{background:linear-gradient(135deg,#0f1115 0%,#1a1d25 100%);position:relative;overflow:hidden;transition:transform 0.1s ease}
+#home:before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(0,170,255,.05);top:-250px;right:-250px;animation:float 8s ease-in-out infinite}
+#home:after{content:'';position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(0,170,255,.03);bottom:-150px;left:-150px;animation:float 10s ease-in-out infinite reverse}
+@keyframes float{0%,100%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(-20px,-20px) rotate(5deg)}50%{transform:translate(0,-40px) rotate(0deg)}75%{transform:translate(20px,-20px) rotate(-5deg)}}
+
+.home__content{position:relative;z-index:1}
+.home__subtitle{font-size:1.3rem;margin-bottom:2rem;color:#b0b0b0;opacity:0;animation:fadeInUp 1s ease-out 0.2s forwards}
+
+/* About Section - UPDATED WITH PULSE ANIMATION */
+#about{background:#13161c}
+.about__content{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;max-width:1100px;margin-top:2rem;opacity:0;animation:fadeIn 1s ease-out 0.3s forwards}
+@keyframes fadeIn{to{opacity:1}}
+
+.about__text{text-align:left}
+.about__image{width:100%;border-radius:10px;overflow:hidden;box-shadow:0 15px 30px rgba(0,0,0,.3);transform:scale(0.9);opacity:0;animation:scaleIn 1s ease-out 0.5s forwards}
+@keyframes scaleIn{to{transform:scale(1);opacity:1}}
+
+.about__placeholder{
+  width:100%;
+  height:400px;
+  background:#2a2e38;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all .5s ease;
+  border-radius:10px;
+  overflow:hidden;
+  position:relative;
+  animation:pulse 3s ease-in-out infinite; /* PULSE ANIMATION ADDED */
+}
+
+@keyframes pulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.02)}
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: all 0.5s ease;
+}
+
+.about__image:hover .hero-image {
+  transform: scale(1.1);
+  box-shadow: 0 0 50px rgba(0,170,255,0.4);
+}
+
+.about__text p{font-size:1.1rem;line-height:1.8;color:#b0b0b0;margin-bottom:1.5rem;text-align:left;opacity:0;transform:translateX(-20px);animation:slideInText 0.8s ease-out forwards}
+.about__text p:nth-child(2){animation-delay:0.3s}
+.about__text p:nth-child(3){animation-delay:0.5s}
+@keyframes slideInText{to{opacity:1;transform:translateX(0)}}
+  
+/* Stats Cards with Pop Animation */
+.stats__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem;max-width:1100px;width:100%}
+.stat__item{background:#1b1f26;padding:2.5rem 2rem;border-radius:10px;text-align:center;transition:all .4s ease;box-shadow:0 5px 15px rgba(0,0,0,.1);opacity:0;transform:scale(0.8) translateY(30px);animation:popIn 0.6s ease-out forwards}
+.stat__item:nth-child(1){animation-delay:0.2s}
+.stat__item:nth-child(2){animation-delay:0.4s}
+.stat__item:nth-child(3){animation-delay:0.6s}
+@keyframes popIn{to{opacity:1;transform:scale(1) translateY(0)}}
+
+.stat__item:hover{transform:translateY(-15px) scale(1.08);box-shadow:0 20px 40px rgba(0,170,255,0.3);background:#1f2329}
+.stat__number{font-size:2.5rem;font-weight:700;color:#00aaff;display:block;margin-bottom:.5rem}
+.stat__label{color:#b0b0b0;font-size:1rem}
+
+/* Skills Section */
+#skills{background:#0f1115}
+.skills__container{max-width:800px;width:100%;display:grid;gap:1.5rem;margin-top:2rem}
+.skills__data{background:#1b1f26;padding:1.5rem;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 5px 15px rgba(0,0,0,.1);transition:transform .3s ease;opacity:0;transform:translateX(-50px);animation:slideInTimeline 0.8s ease-out forwards}
+.skills__data:nth-child(1){animation-delay:0.2s}
+.skills__data:nth-child(2){animation-delay:0.4s}
+.skills__data:nth-child(3){animation-delay:0.6s}
+.skills__data:nth-child(4){animation-delay:0.8s}
+.skills__data:nth-child(5){animation-delay:1s}
+@keyframes slideInTimeline{to{opacity:1;transform:translateX(0)}}
+
+.skills__data:hover{transform:translateY(-5px) translateX(0)}
+.skills__name{font-weight:500;min-width:140px}
+.skills__bar-container{flex:1;margin:0 1.5rem;height:8px;background:#2a2e38;border-radius:5px;overflow:hidden}
+.skills__bar{height:100%;background:#00aaff;width:0;border-radius:5px;transition:1.5s ease;position:relative}
+.skills__bar:after{content:'';position:absolute;top:0;left:0;bottom:0;right:0;background-image:linear-gradient(-45deg,rgba(255,255,255,.2) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.2) 50%,rgba(255,255,255,.2) 75%,transparent 75%,transparent);z-index:1;background-size:15px 15px;animation:move 2s linear infinite;border-radius:5px}
+@keyframes move{0%{background-position:0 0}100%{background-position:15px 0}}
+.skills__percentage{font-weight:600;color:#00aaff;min-width:45px;text-align:right}
+
+/* Work Section */
+#work{background:#13161c}
+.projects__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;max-width:1100px;margin-top:2rem;width:100%}
+.project__card{background:#1b1f26;border-radius:10px;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease;box-shadow:0 5px 15px rgba(0,0,0,.1);opacity:0;transform:rotateY(-90deg);animation:flipIn 0.8s ease-out forwards}
+.project__card:nth-child(1){animation-delay:0.2s}
+.project__card:nth-child(2){animation-delay:0.4s}
+.project__card:nth-child(3){animation-delay:0.6s}
+@keyframes flipIn{to{opacity:1;transform:rotateY(0)}}
+
+.project__card:hover{transform:translateY(-10px) scale(1.05);box-shadow:0 15px 30px rgba(0,170,255,.25);background:#1f2329}
+.project__image{width:100%;height:200px;background:#2a2e38;display:flex;align-items:center;justify-content:center;color:#00aaff;font-size:3rem;transition:all .5s ease;position:relative}
+.project__card:hover .project__image{transform:scale(1.1)}
+.project__content{padding:1.5rem}
+.project__title{font-size:1.3rem;margin-bottom:.5rem;color:#e5e5e5}
+.project__description{font-size:.95rem;color:#b0b0b0;margin-bottom:1rem}
+.project__tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+.project__tag{background:rgba(0,170,255,.1);color:#00aaff;padding:.3rem .8rem;border-radius:20px;font-size:.8rem}
+.project__link{color:#00aaff;font-weight:500;display:flex;align-items:center;gap:.5rem;transition:gap .3s ease}
+.project__link:hover{gap:.8rem}
+
+/* Pending Project Styles */
+.project__card.pending{opacity:0.7}
+.project__card.pending:hover{transform:none;box-shadow:0 5px 15px rgba(0,0,0,.1)}
+.project__card.pending .project__image{background:#1a1d25}
+.project__card.pending .project__image:after{content:'PENDING';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,170,255,0.9);color:#fff;padding:0.5rem 1rem;border-radius:5px;font-size:0.9rem;font-weight:600}
+.project__card.pending .project__link{color:#b0b0b0;cursor:not-allowed}
+.project__card.pending .project__link:hover{color:#b0b0b0;gap:.5rem}
+
+/* Contact Section */
+#contact{background:#0f1115}
+.contact__form{max-width:600px;width:100%;display:flex;flex-direction:column;gap:1.5rem;margin-top:2rem}
+.contact__input{padding:1rem 1.5rem;background:#1b1f26;border:1px solid #2a2e38;border-radius:8px;color:#e5e5e5;font-family:'Inter',sans-serif;font-size:1rem;transition:border .3s ease;opacity:0;transform:translateY(20px);animation:fadeInUp 0.8s ease-out forwards}
+.contact__input:nth-child(1){animation-delay:0.2s}
+.contact__input:nth-child(2){animation-delay:0.3s}
+.contact__input:nth-child(3){animation-delay:0.4s}
+.contact__input:nth-child(4){animation-delay:0.5s}
+.contact__input:focus{outline:0;border-color:#00aaff}
+textarea.contact__input{resize:vertical;min-height:150px}
+
+/* Footer */
+footer{text-align:center;padding:3rem 2rem;background:#0a0c10;color:#aaa;border-top:1px solid rgba(255,255,255,.05)}
+.footer__content{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+.footer__icon{margin:0 .5rem;font-size:1.5rem;color:#00aaff;transition:all .3s;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:rgba(0,170,255,.1)}
+.footer__icon:hover{color:#fff;background:#00aaff;transform:translateY(-5px) rotate(360deg)}
+.footer__links{display:flex;gap:2rem;margin-top:1rem}
+.footer__links a{color:#b0b0b0;transition:color .3s ease}
+.footer__links a:hover{color:#00aaff}
+
+/* Responsive */
+@media(max-width:768px){
+  h1{font-size:2.5rem}
+  h2{font-size:2rem}
+  section{padding:6rem 1.5rem}
+  .button-outline{margin-left:0;margin-top:1rem}
+  .about__content{grid-template-columns:1fr;gap:2rem}
+  .about__text{text-align:center}
+  .stats__grid{grid-template-columns:1fr;gap:1.5rem}
+  .footer__links{flex-direction:column;gap:1rem}
+  .skills__data{flex-direction:column;gap:1rem}
+  .skills__name{width:100%;text-align:center}
+  .skills__bar-container{width:100%;margin:0}
+  .skills__percentage{text-align:center}
+  .about__placeholder{height:300px}
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Preloader -->
+<div id="preloader"><div class="loader"></div></div>
+
+<header>
+<nav class="nav container">
+<a href="index.html" class="nav__logo">Musa</a>
+<ul class="nav__list" id="nav-list">
+<li><a href="index.html" class="nav__link active-link">Home</a></li>
+<li><a href="about.html" class="nav__link">About</a></li>
+<li><a href="skills.html" class="nav__link">Skills</a></li>
+<li><a href="resume.html" class="nav__link">Resume</a></li>
+<li><a href="work.html" class="nav__link">Projects</a></li>
+<li><a href="contact.html" class="nav__link">Contact</a></li>
+</ul>
+<div class="nav__toggle" id="nav-toggle"><i class='bx bx-menu'></i></div>
+</nav>
+</header>
+
+<main>
+<section id="home">
+<div class="home__content">
+<h1>Hi, I'm <span>Musa</span></h1>
+<p class="home__subtitle">Web developer, Software developer & UI/UX Designer</p>
+<p>I build digital experiences that merge creativity and logic clean interfaces, smooth interactions, and solutions that deliver real business value.</p>
+<div>
+<a href="work.html" class="button">View My Work</a>
+<a href="contact.html" class="button button-outline">Get In Touch</a>
+</div>
+</div>
+</section>
+
+<section id="about">
+<h2>About Me</h2>
+<div class="about__content">
+<div class="about__text">
+<p>I'm a passionate young developer who blends technology with business strategy. With over 2 years of experience, I specialize in creating digital solutions that not only look great but also drive results.</p>
+<p>My approach combines technical expertise with a deep understanding of user psychology, ensuring that every project I work on delivers both aesthetic appeal and functional excellence.</p>
+<p>When I'm not coding, you'll find me exploring new design trends, contributing to open-source projects, or sharing knowledge with the developer community.</p>
+</div>
+<div class="about__image">
+  <div class="about__placeholder">
+    <img src="./images/hero.png" alt="Musa" class="hero-image">
+  </div>
+</div>
+</div>
+<div class="stats__grid">
+<div class="stat__item">
+<span class="stat__number" data-target="50">0</span>
+<span class="stat__label">Projects Completed</span>
+</div>
+<div class="stat__item">
+<span class="stat__number" data-target="30">0</span>
+<span class="stat__label">Happy Clients</span>
+</div>
+<div class="stat__item">
+<span class="stat__number" data-target="5">0</span>
+<span class="stat__label">Years Experience</span>
+</div>
+</div>
+</section>
+
+<section id="skills">
+<h2>My Skills</h2>
+<div class="skills__container">
+<div class="skills__data">
+<span class="skills__name">HTML5 & CSS3</span>
+<div class="skills__bar-container">
+<div class="skills__bar" data-width="95%"></div>
+</div>
+<span class="skills__percentage">95%</span>
+</div>
+<div class="skills__data">
+<span class="skills__name">JavaScript</span>
+<div class="skills__bar-container">
+<div class="skills__bar" data-width="90%"></div>
+</div>
+<span class="skills__percentage">90%</span>
+</div>
+<div class="skills__data">
+<span class="skills__name">React & Flutter</span>
+<div class="skills__bar-container">
+<div class="skills__bar" data-width="85%"></div>
+</div>
+<span class="skills__percentage">85%</span>
+</div>
+<div class="skills__data">
+<span class="skills__name">Kotlin</span>
+<div class="skills__bar-container">
+<div class="skills__bar" data-width="80%"></div>
+</div>
+<span class="skills__percentage">80%</span>
+</div>
+<div class="skills__data">
+<span class="skills__name">UI/UX Design</span>
+<div class="skills__bar-container">
+<div class="skills__bar" data-width="88%"></div>
+</div>
+<span class="skills__percentage">88%</span>
+</div>
+</div>
+</section>
+
+<section id="work">
+<h2>Other Projects</h2>
+<div class="projects__grid">
+<div class="project__card pending">
+<div class="project__image"><i class='bx bx-shopping-bag'></i></div>
+<div class="project__content">
+<h3 class="project__title">E-Commerce Platform</h3>
+<p class="project__description">A full-featured online store with payment integration, inventory management, and responsive design.</p>
+<div class="project__tags">
+<span class="project__tag">React</span>
+<span class="project__tag">Node.js</span>
+<span class="project__tag">MongoDB</span>
+</div>
+<a href="#" class="project__link">Coming Soon <i class='bx bx-time'></i></a>
+</div>
+</div>
+<div class="project__card pending">
+<div class="project__image"><i class='bx bx-line-chart'></i></div>
+<div class="project__content">
+<h3 class="project__title">Analytics Dashboard</h3>
+<p class="project__description">Interactive data visualization tool for business metrics with real-time updates and custom reporting.</p>
+<div class="project__tags">
+<span class="project__tag">Vue.js</span>
+<span class="project__tag">D3.js</span>
+<span class="project__tag">Firebase</span>
+</div>
+<a href="#" class="project__link">Coming Soon <i class='bx bx-time'></i></a>
+</div>
+</div>
+<div class="project__card pending">
+<div class="project__image"><i class='bx bx-mobile-alt'></i></div>
+<div class="project__content">
+<h3 class="project__title">Fitness App</h3>
+<p class="project__description">Mobile application for workout tracking, progress monitoring, and personalized training plans.</p>
+<div class="project__tags">
+<span class="project__tag">React Native</span>
+<span class="project__tag">Redux</span>
+<span class="project__tag">GraphQL</span>
+</div>
+<a href="#" class="project__link">Coming Soon <i class='bx bx-time'></i></a>
+</div>
+</div>
+</div>
+</section>
+
+<section id="contact">
+<h2>Get In Touch</h2>
+<p>Have a project in mind or want to discuss potential collaboration? I'd love to hear from you.</p>
+<form class="contact__form" action="https://formspree.io/f/yourformid" method="POST">
+<input type="text" name="name" placeholder="Your Name" class="contact__input" required/>
+<input type="email" name="email" placeholder="Your Email" class="contact__input" required/>
+<input type="text" name="subject" placeholder="Subject" class="contact__input" required/>
+<textarea name="message" rows="6" placeholder="Your Message" class="contact__input"></textarea>
+<button type="submit" class="button">Send Message</button>
+</form>
+</section>
+</main>
+
+<footer>
+<div class="footer__content">
+<div>
+<a href="https://github.com/musa46-igtm" class="footer__icon" target="_blank"><i class='bx bxl-github'></i></a>
+<a href="https://youtube.com/@musabuilds?si=mhGwMpC5r9IbbS-z" class="footer__icon"><i class='bx bxl-youtube'></i></a>
+<a href="https://twitter.com/MusaAbubak60427" class="footer__icon"><i class='bx bxl-twitter'></i></a>
+</div>
+<p>Musa © 2025. Learning and building cool things!</p>
+</div>
+</footer>
+<script>
+// Preloader
+document.addEventListener('DOMContentLoaded', () => {
+  const preloader = document.getElementById('preloader');
+  setTimeout(() => {
+    preloader.style.opacity = '0';
+    setTimeout(() => preloader.style.display = 'none', 300);
+  }, 500);
+});
+
+// Mobile Navigation Toggle - IMPROVED
+const navToggle = document.getElementById('nav-toggle');
+const navList = document.getElementById('nav-list');
+const navLinks = document.querySelectorAll('.nav__link');
+
+navToggle.addEventListener('click', () => {
+  navList.classList.toggle('show');
+  navToggle.innerHTML = navList.classList.contains('show') ? '<i class="bx bx-x"></i>' : '<i class="bx bx-menu"></i>';
+  document.body.style.overflow = navList.classList.contains('show') ? 'hidden' : '';
+});
+
+// Close mobile menu when clicking on a link
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    navList.classList.remove('show');
+    navToggle.innerHTML = '<i class="bx bx-menu"></i>';
+    document.body.style.overflow = '';
+  });
+});
+
+// Scroll Progress Bar
+window.addEventListener('scroll', () => {
+  const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = (winScroll / height) * 100;
+  document.getElementById('progressBar').style.width = scrolled + '%';
+});
+
+// Active Navigation Link - IMPROVED
+function updateActiveNav() {
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  
+  navLinks.forEach(link => {
+    link.classList.remove('active-link');
+    const linkHref = link.getAttribute('href');
+    
+    if (linkHref === currentPage) {
+      link.classList.add('active-link');
+    }
+  });
+}
+
+// Update active nav on page load
+updateActiveNav();
+
+// Intersection Observer for Animations
+const observerOptions = { threshold: 0.2 };
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      
+      // Animate skill bars
+      const skillBars = entry.target.querySelectorAll('.skills__bar');
+      skillBars.forEach(bar => {
+        bar.style.width = bar.dataset.width;
+      });
+      
+      // Animate counters
+      if (entry.target.id === 'about') {
+        animateCounters();
+      }
+    }
+  });
+}, observerOptions);
+
+const sections = document.querySelectorAll('section');
+sections.forEach(section => observer.observe(section));
+
+// Parallax Effect for Home Section
+window.addEventListener('scroll', () => {
+  const scrolled = window.pageYOffset;
+  const homeSection = document.getElementById('home');
+  if (homeSection && scrolled < 800) {
+    homeSection.style.transform = `translateY(${scrolled * 0.4}px)`;
+    homeSection.style.opacity = 1 - (scrolled / 600);
+  }
+});
+
+// Animated Counter Function
+function animateCounters() {
+  const counters = document.querySelectorAll('.stat__number');
+  const speed = 200; // The lower the slower
+  
+  counters.forEach(counter => {
+    const target = +counter.getAttribute('data-target');
+    const count = +counter.innerText;
+    const increment = target / speed;
+    
+    if (count < target) {
+      counter.innerText = Math.ceil(count + increment);
+      setTimeout(() => animateCounters(), 1);
+    } else {
+      counter.innerText = target + '+';
+    }
+  });
+}
+
+// Initialize counters when page loads
+window.addEventListener('load', () => {
+  // Check if we're on the about page
+  if (window.location.pathname.includes('about.html') || window.location.pathname.includes('index.html')) {
+    // Wait a bit for animations to complete
+    setTimeout(() => {
+      animateCounters();
+    }, 1000);
+  }
+});
+</script>
+</body>
+</html>
